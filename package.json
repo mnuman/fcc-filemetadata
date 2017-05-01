@@ -23,6 +23,7 @@
   "homepage": "https://github.com/mnuman/fcc-filemetadata#readme",
   "dependencies": {
     "express": "^4.15.2",
+    "morgan": "^1.8.1",
     "multer": "^1.3.0"
   }
 }
