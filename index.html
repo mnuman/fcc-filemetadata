@@ -15,15 +15,10 @@
 </head>
 
 <body>
-  <h1>Hi Bob, I'm here...</h1>
-  <p>Now, do some stuff here like providing a form to select a file and upload this....</p>
-  <form enctype="multipart/form-data" action="/upload/file" method="post">
-    <div class="form-group">
-      <input id="just-a-file" type="file" class="form-control" required/>
-    </div>
-    <div class="form-group">
-      <input type="submit" class="btn btn-primary" value="upload">
-    </div>
+  <p>Submit a file to view its filesize.</p>
+  <form enctype="multipart/form-data" action="/get-file-size" method="post">
+    <input type="file" name="myfile" />
+    <input type="submit" value="Upload File" name="submit" />
   </form>
 </body>
 

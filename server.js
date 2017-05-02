@@ -1,28 +1,34 @@
-'use strict';
-
 var express = require('express');
 var multer = require('multer');
-var path = require('path');
-var morgan = require('morgan');
-
 var app = express();
-var upload = multer({ dest: 'uploads/' })
-
 var port = process.env.PORT || 8080;
+var morgan = require('morgan');
+var path=require('path');
+
+app.set('port', port); 
 // Use Morgan for logging in development mode; should make format an environment variable...
 app.use(morgan('dev'));
-// setup a static route to index.html in the public directory: this will contain the form, eventually.
-app.use('/', express.static(path.join(__dirname, 'public')));
+/* Disk Storage engine of multer gives you full control on storing files to disk. The options are destination (for determining which folder the file should be saved) and filename (name of the file inside the folder) */
 
-app.post('/upload/file', function (req, res) {
-  console.log('Uploading....');
-  console.log(req.body);
-  console.log(req.files);
-  // req.file is the `avatar` file
-  // req.body will hold the text fields, if there were any
-  res.send('Hi there');
+var storage = multer.memoryStorage();
+var upload = multer({ storage: storage }).single('myfile');
+
+//Showing index.html file on our homepage
+app.get('/', function(resuest, response) {
+  response.sendFile(path.join(__dirname,'index.html'));
 });
-// need to set port dynamically for Heroku ....
-app.listen(port, function() {
-  console.log('File metadata app listening on port ', + port +'!');
-})
+
+//Posting the file upload
+app.post('/get-file-size', function(request, response) {
+  upload(request, response, function(err) {
+  if(err) {
+    console.log('Error Occured:'+err);
+    return;
+  }
+  response.send({size: request.file.size});
+  })
+});
+
+var server = app.listen(port, function () {
+  console.log('Listening on port ' + server.address().port)
+});
